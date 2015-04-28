@@ -27,6 +27,7 @@ uis.directive('uiSelect',
 
         var $select = ctrls[0];
         var ngModel = ctrls[1];
+        var defaultIsEmptyFn = ngModel.$isEmpty;
 
         $select.generatedId = uiSelectConfig.generateId();
         $select.baseTitle = attrs.title || 'Select box';
@@ -43,6 +44,12 @@ uis.directive('uiSelect',
 
         $select.onSelectCallback = $parse(attrs.onSelect);
         $select.onRemoveCallback = $parse(attrs.onRemove);
+
+        if ($select.multiple) {
+          ngModel.$isEmpty = function(value) { 
+            return (angular.isArray(value) && value.length === 0) || defaultIsEmptyFn();
+          };
+        }
         
         //Set reference to ngModel from uiSelectCtrl
         $select.ngModel = ngModel;

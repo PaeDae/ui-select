@@ -1771,6 +1771,15 @@ describe('ui-select tests', function() {
 
       expect($(el).scope().$select.selected.length).toBe(5);
     });
+
+    it('should be marked invalid when required and empty', function() {
+      var el;
+
+      scope.selection.selectedMultiple = [];
+      el = createUiSelectMultiple({required: true});
+      expect(el.scope().$select.ngModel.$invalid).toBe(true);
+      expect(el.scope().$select.ngModel.$error.required).toBe(true);
+    });
   });
 
   describe('default configuration via uiSelectConfig', function() {

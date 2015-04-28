@@ -1,7 +1,7 @@
 /*!
  * ui-select
  * http://github.com/angular-ui/ui-select
- * Version: 0.11.2 - 2015-04-28T21:27:47.404Z
+ * Version: 0.11.2 - 2015-04-28T21:43:16.220Z
  * License: MIT
  */
 
@@ -764,6 +764,7 @@ uis.directive('uiSelect',
 
         var $select = ctrls[0];
         var ngModel = ctrls[1];
+        var defaultIsEmptyFn = ngModel.$isEmpty;
 
         $select.generatedId = uiSelectConfig.generateId();
         $select.baseTitle = attrs.title || 'Select box';
@@ -780,6 +781,12 @@ uis.directive('uiSelect',
 
         $select.onSelectCallback = $parse(attrs.onSelect);
         $select.onRemoveCallback = $parse(attrs.onRemove);
+
+        if ($select.multiple) {
+          ngModel.$isEmpty = function(value) { 
+            return (angular.isArray(value) && value.length === 0) || defaultIsEmptyFn();
+          };
+        }
         
         //Set reference to ngModel from uiSelectCtrl
         $select.ngModel = ngModel;
